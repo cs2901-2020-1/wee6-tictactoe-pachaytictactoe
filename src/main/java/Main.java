@@ -1,3 +1,6 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Arrays;
 
 public class Main {
@@ -5,7 +8,18 @@ public class Main {
    
     static char[][] tablero = new char[3][3];
 
-    void init() {
+    static void print() {
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 2; j++) {
+                System.out.print(tablero[i][j]);
+                System.out.print(" - ");
+            }
+            System.out.print(tablero[i][2]);
+            System.out.print("\n");
+        }
+    }
+
+    static void init() {
 
         for (int i = 0; i < 3; i++) {
             Arrays.fill(tablero[i], ' ');
@@ -56,14 +70,35 @@ public class Main {
         return 0;
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
+        char player = 'x';
+        init();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         while(winner() == 0)
         {
-            //turn();
+            System.out.println("Insert Coordinates (separated by space):");
+            String name = reader.readLine();
+            String[] parsed = name.split(" ");
+            if (Integer.parseInt(parsed[0]) >= 3) {
+                System.out.println("Invalid Coordinate");
+                continue;
+            }
+            if (Integer.parseInt(parsed[1]) >= 3) {
+                System.out.println("Invalid Coordinate");
+                continue;
+            }
+            turn(player, Integer.parseInt(parsed[0]), Integer.parseInt(parsed[1]));
+            print();
+            if (player == 'o') {player = 'x';}
+            else {player = 'o';}
         }
-
-        System.out.println("Hello world!");
+        if (winner() == 1) {
+            System.out.print("Winner is x");
+        }
+        else if (winner() == 2) {
+            System.out.print("Winner is o");
+        }
     }
 
 
